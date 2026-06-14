@@ -1,0 +1,55 @@
+<div class="page-header"><h1><i class="fas fa-plus-circle me-2"></i>Add Menu Item</h1></div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="/menu" method="POST">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Name *</label>
+          <input type="text" class="form-control" name="name" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Category *</label>
+          <select class="form-select" name="category" required>
+            <option value="starter">Starter</option>
+            <option value="main-course">Main Course</option>
+            <option value="dessert">Dessert</option>
+            <option value="beverage">Beverage</option>
+            <option value="snacks">Snacks</option>
+            <option value="breakfast">Breakfast</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Price (₹) *</label>
+          <input type="number" class="form-control" name="price" min="0" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Prep Time (min)</label>
+          <input type="number" class="form-control" name="preparationTime" value="15" min="1">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Type</label>
+          <select class="form-select" name="isVeg">
+            <option value="true">Vegetarian</option>
+            <option value="false">Non-Vegetarian</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Available</label>
+          <select class="form-select" name="isAvailable">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="mt-4">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Save</button>
+        <a href="/menu" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

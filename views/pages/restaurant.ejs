@@ -1,0 +1,82 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="page-hero" style="background-image: url('<%= image %>')">
+    <div class="page-hero-inner">
+      <p class="eyebrow reveal">QR Menu / Room Service / Live Kitchen Tracking</p>
+      <h1 class="reveal font-display text-5xl md:text-6xl">Restaurant Management</h1>
+      <p class="reveal max-w-2xl text-white/70">Reserve a table, build a food order, inspect allergens, and track kitchen status in real time.</p>
+    </div>
+  </section>
+
+  <section class="section grid gap-8 lg:grid-cols-[1fr_380px]">
+    <div>
+      <div class="mb-6 flex flex-wrap gap-2">
+        <% categories.forEach((category) => { %><button class="category-pill" data-category="<%= category %>"><%= category %></button><% }) %>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        <% foodItems.forEach((item) => { %>
+          <article class="food-card reveal" data-food-category="<%= item.category %>">
+            <img src="<%= item.image %>" alt="<%= item.name %>" loading="lazy">
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <span class="eyebrow"><%= item.category %></span>
+                  <h2 class="mt-2 font-display text-2xl"><%= item.name %></h2>
+                </div>
+                <span class="pill"><%= site.currency %><%= item.price %></span>
+              </div>
+              <p class="mt-3 text-sm text-white/62"><%= item.chefNote %></p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <% item.allergens.forEach((allergen) => { %><span class="mini-chip"><%= allergen %></span><% }) %>
+              </div>
+              <button class="btn btn-ghost mt-5 add-food" type="button" data-name="<%= item.name %>" data-price="<%= item.price %>"><i data-lucide="shopping-cart" class="h-4 w-4"></i><span>Add to Cart</span></button>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+
+    <aside class="grid h-fit gap-5">
+      <form class="glass-panel p-5" action="/restaurant/reserve" method="post">
+        <h2 class="font-display text-3xl">Reserve Table</h2>
+        <div class="mt-5 grid gap-3">
+          <label class="label">Guest Name<input class="field" name="guestName" value="<%= user?.name || '' %>" required></label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="label">Date<input class="field" type="date" name="reservationDate" required></label>
+            <label class="label">Time<input class="field" type="time" name="reservationTime" required></label>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="label">Guests<input class="field" type="number" min="1" name="guests" value="2"></label>
+            <label class="label">Meal<select class="field" name="mealType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Chef Table</option></select></label>
+          </div>
+          <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="calendar-check" class="h-4 w-4"></i><span>Reserve</span></button>
+        </div>
+      </form>
+
+      <div class="glass-panel p-5">
+        <h2 class="font-display text-3xl">Table Map</h2>
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <% tables.forEach((table) => { %>
+            <div class="table-seat <%= table.status.toLowerCase().replace(' ', '-') %>">
+              <span class="font-semibold"><%= table.code %></span>
+              <span><%= table.seats %> seats</span>
+              <small><%= table.status %></small>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="glass-panel p-5">
+        <h2 class="font-display text-3xl">Cart</h2>
+        <div id="cart-items" class="mt-4 grid gap-2 text-sm text-white/68"></div>
+        <button id="place-food-order" class="btn btn-gold mt-5 w-full justify-center" type="button"><i data-lucide="chef-hat" class="h-4 w-4"></i><span>Send to Kitchen</span></button>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

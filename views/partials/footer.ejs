@@ -1,0 +1,43 @@
+<footer class="border-t border-white/10 bg-black">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.3fr_1fr_1fr_1fr] lg:px-8">
+    <div>
+      <div class="mb-4 flex items-center gap-3">
+        <span class="grid h-11 w-11 place-items-center border border-luxury-gold/60 bg-luxury-gold/10 text-luxury-gold">
+          <i data-lucide="gem" class="h-5 w-5"></i>
+        </span>
+        <span class="font-display text-xl"><%= site.name %></span>
+      </div>
+      <p class="max-w-md text-sm leading-6 text-white/60"><%= site.tagline %> through intelligent booking, private dining, spa rituals, and precision hospitality.</p>
+      <form action="/newsletter" method="post" class="mt-6 flex max-w-md gap-2">
+        <input class="field" type="email" name="email" placeholder="Email address" required>
+        <button class="icon-btn gold-fill" type="submit" aria-label="Subscribe" title="Subscribe">
+          <i data-lucide="send" class="h-4 w-4"></i>
+        </button>
+      </form>
+    </div>
+    <div>
+      <h2 class="footer-title">Experiences</h2>
+      <a class="footer-link" href="/rooms">Rooms</a>
+      <a class="footer-link" href="/restaurant">Restaurant</a>
+      <a class="footer-link" href="/spa">Spa</a>
+      <a class="footer-link" href="/events">Events</a>
+    </div>
+    <div>
+      <h2 class="footer-title">Smart Hotel</h2>
+      <a class="footer-link" href="/concierge">AI Concierge</a>
+      <a class="footer-link" href="/virtual-tour">Virtual Tours</a>
+      <a class="footer-link" href="/memberships">VIP Membership</a>
+      <a class="footer-link" href="/offers">Offers</a>
+    </div>
+    <div>
+      <h2 class="footer-title">Contact</h2>
+      <p class="footer-link"><%= site.phone %></p>
+      <p class="footer-link"><%= site.email %></p>
+      <p class="footer-link"><%= site.address %></p>
+      <a class="btn btn-ghost mt-4 w-fit" href="/contact"><i data-lucide="message-square" class="h-4 w-4"></i><span>Contact</span></a>
+    </div>
+  </div>
+  <div class="border-t border-white/10 px-4 py-5 text-center text-xs text-white/45">
+    <%= new Date().getFullYear() %> Grand Luxury Hotel & Restaurant. Hospitality management demo platform.
+  </div>
+</footer>

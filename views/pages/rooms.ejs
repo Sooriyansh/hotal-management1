@@ -1,0 +1,48 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="page-hero" style="background-image: url('<%= rooms[0]?.image %>')">
+    <div class="page-hero-inner">
+      <p class="eyebrow reveal">Availability Calendar / Smart Pricing / GST Invoice</p>
+      <h1 class="reveal font-display text-5xl md:text-6xl">Luxury Rooms & Suites</h1>
+      <p class="reveal max-w-2xl text-white/68">Compare every category, review capacity and amenities, use coupon codes, and move from availability to invoice in one flow.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid gap-5 lg:grid-cols-2">
+      <% rooms.forEach((room) => { %>
+        <article class="room-row reveal">
+          <img src="<%= room.image %>" alt="<%= room.name %>" loading="lazy">
+          <div class="p-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p class="eyebrow"><%= room.category %></p>
+                <h2 class="font-display text-3xl"><%= room.name %></h2>
+              </div>
+              <span class="pill"><%= site.currency %><%= room.price %> / night</span>
+            </div>
+            <p class="mt-4 text-sm leading-6 text-white/65"><%= room.description %></p>
+            <div class="mt-4 grid grid-cols-3 gap-2 text-sm text-white/65">
+              <span><i data-lucide="users" class="inline h-4 w-4 text-luxury-gold"></i> <%= room.capacity %></span>
+              <span><i data-lucide="ruler" class="inline h-4 w-4 text-luxury-gold"></i> <%= room.size %></span>
+              <span><i data-lucide="star" class="inline h-4 w-4 text-luxury-gold"></i> <%= room.rating %></span>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <% room.amenities.forEach((item) => { %><span class="mini-chip"><%= item %></span><% }) %>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a href="/rooms/<%= room.slug %>" class="btn btn-gold"><i data-lucide="calendar-plus" class="h-4 w-4"></i><span>Book</span></a>
+              <a href="/virtual-tour" class="btn btn-ghost"><i data-lucide="scan-eye" class="h-4 w-4"></i><span>360 Tour</span></a>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

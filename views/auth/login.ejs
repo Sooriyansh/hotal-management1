@@ -1,0 +1,22 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="auth-page">
+  <section class="auth-panel reveal">
+    <p class="eyebrow">JWT Authentication</p>
+    <h1 class="mt-3 font-display text-5xl">Login</h1>
+    <p class="mt-4 text-sm leading-6 text-white/62">Demo mode accepts any password with 4 or more characters. Use admin@grandluxury.example for admin access or customer@grandluxury.example for guest access.</p>
+    <form class="mt-7 grid gap-3" action="/auth/login" method="post">
+      <label class="label">Email<input class="field" type="email" name="email" value="customer@grandluxury.example" required></label>
+      <label class="label">Password<input class="field" type="password" name="password" value="demo1234" required></label>
+      <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="log-in" class="h-4 w-4"></i><span>Login</span></button>
+    </form>
+    <div class="mt-5 flex flex-wrap gap-3 text-sm text-white/60">
+      <a href="/auth/register" class="text-luxury-gold">Create account</a>
+      <a href="/auth/forgot" class="text-luxury-gold">Forgot password</a>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/scripts') %>

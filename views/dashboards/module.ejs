@@ -1,0 +1,150 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<% const formatValue = (value, type) => {
+  if (value === undefined || value === null) return "";
+  if (Array.isArray(value)) return value.join(", ");
+  if (type === "date" || type === "datetime-local") {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    if (type === "datetime-local") return date.toISOString().slice(0, 16);
+    return date.toISOString().slice(0, 10);
+  }
+  if (typeof value === "boolean") return value ? "true" : "";
+  return value;
+}; %>
+
+<main class="pt-24" data-workflow-module="<%= moduleSlug %>">
+  <section class="dashboard-layout">
+    <aside class="dashboard-nav">
+      <p class="eyebrow">Management Modules</p>
+      <h1 class="mt-2 font-display text-3xl"><%= moduleName %></h1>
+      <% modules.forEach((module) => { %>
+        <a href="/admin/<%= module.slug %>"><i data-lucide="<%= module.icon || 'panel-right' %>" class="h-4 w-4"></i><span><%= module.label %></span></a>
+      <% }) %>
+    </aside>
+
+    <div class="grid gap-5">
+      <div class="glass-panel p-5">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="eyebrow">CRUD / Permissions / Live Audit</p>
+            <h1 class="font-display text-4xl"><%= moduleName %></h1>
+          </div>
+          <% if (can('export')) { %>
+            <a class="btn btn-ghost" href="/admin/<%= moduleSlug %>/export"><i data-lucide="download" class="h-4 w-4"></i><span>Export</span></a>
+          <% } %>
+        </div>
+      </div>
+
+      <% if (can('create') && !moduleConfig.readOnly) { %>
+        <div class="glass-panel p-5">
+          <form class="grid gap-3 md:grid-cols-2 xl:grid-cols-3" action="/admin/<%= moduleSlug %>" method="post">
+            <% moduleConfig.fields.forEach((field) => { %>
+              <label class="label <%= field.type === 'textarea' ? 'md:col-span-2 xl:col-span-3' : '' %>"><%= field.label %>
+                <% if (field.type === 'select') { %>
+                  <select class="field" name="<%= field.name %>">
+                    <% field.options.forEach((option) => { %>
+                      <option value="<%= option %>"><%= option %></option>
+                    <% }) %>
+                  </select>
+                <% } else if (field.type === 'textarea') { %>
+                  <textarea class="field" name="<%= field.name %>" rows="3"></textarea>
+                <% } else if (field.type === 'boolean') { %>
+                  <select class="field" name="<%= field.name %>"><option value="true">Yes</option><option value="false">No</option></select>
+                <% } else { %>
+                  <input class="field" type="<%= field.type === 'tags' ? 'text' : field.type %>" name="<%= field.name %>" placeholder="<%= field.type === 'tags' ? 'Comma separated' : '' %>" <%= field.name === 'password' ? 'required' : '' %>>
+                <% } %>
+              </label>
+            <% }) %>
+            <div class="flex items-end">
+              <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="plus" class="h-4 w-4"></i><span>Create</span></button>
+            </div>
+          </form>
+        </div>
+      <% } %>
+
+      <div class="glass-panel p-5">
+        <div class="responsive-table">
+          <table>
+            <thead>
+              <tr>
+                <% moduleConfig.listFields.forEach((field) => { %>
+                  <th><%= field %></th>
+                <% }) %>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody data-workflow-rows>
+              <% if (!rows.length) { %>
+                <tr><td colspan="<%= moduleConfig.listFields.length + 1 %>">No records yet.</td></tr>
+              <% } %>
+              <% rows.forEach((row) => { %>
+                <tr data-record-id="<%= row.id %>">
+                  <% row.values.forEach((item) => { %>
+                    <td data-field="<%= item.name %>"><span class="<%= item.name.toLowerCase().includes('status') || item.name.startsWith('is') ? 'status-pill' : '' %>"><%= item.value %></span></td>
+                  <% }) %>
+                  <td>
+                    <div class="workflow-actions">
+                      <% if (moduleConfig.statusActions) { %>
+                        <% Object.keys(moduleConfig.statusActions).forEach((action) => { %>
+                          <% const permissionAction = ['accept', 'ready', 'preparing', 'check-in', 'quote'].includes(action) ? 'update' : action; %>
+                          <% if (can(permissionAction)) { %>
+                            <form action="/admin/<%= moduleSlug %>/<%= row.id %>/actions/<%= action %>" method="post">
+                              <% if (action === 'assign' && moduleSlug === 'room-bookings') { %>
+                                <input class="mini-field" name="assignedRoom" placeholder="Room">
+                              <% } %>
+                              <button class="icon-btn" type="submit" aria-label="<%= action %>" title="<%= action %>"><i data-lucide="<%= action === 'reject' ? 'x' : action === 'complete' ? 'check-check' : action === 'assign' ? 'user-check' : 'check' %>" class="h-4 w-4"></i></button>
+                            </form>
+                          <% } %>
+                        <% }) %>
+                      <% } %>
+                      <% if (can('delete')) { %>
+                        <form action="/admin/<%= moduleSlug %>/<%= row.id %>?_method=DELETE" method="post">
+                          <button class="icon-btn" type="submit" aria-label="Delete" title="Delete"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                        </form>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+                <% if (can('update') && !moduleConfig.readOnly) { %>
+                  <tr data-edit-for="<%= row.id %>">
+                    <td colspan="<%= moduleConfig.listFields.length + 1 %>">
+                      <form class="inline-edit-grid" action="/admin/<%= moduleSlug %>/<%= row.id %>?_method=PUT" method="post">
+                        <% moduleConfig.fields.forEach((field) => { %>
+                          <% const current = formatValue(row.raw[field.name], field.type); %>
+                          <label class="label"><%= field.label %>
+                            <% if (field.type === 'select') { %>
+                              <select class="field" name="<%= field.name %>">
+                                <% field.options.forEach((option) => { %>
+                                  <option value="<%= option %>" <%= current === option ? 'selected' : '' %>><%= option %></option>
+                                <% }) %>
+                              </select>
+                            <% } else if (field.type === 'textarea') { %>
+                              <textarea class="field" name="<%= field.name %>" rows="2"><%= current %></textarea>
+                            <% } else if (field.type === 'boolean') { %>
+                              <select class="field" name="<%= field.name %>"><option value="true" <%= current ? 'selected' : '' %>>Yes</option><option value="false" <%= !current ? 'selected' : '' %>>No</option></select>
+                            <% } else { %>
+                              <input class="field" type="<%= field.type === 'tags' ? 'text' : field.type %>" name="<%= field.name %>" value="<%= current %>">
+                            <% } %>
+                          </label>
+                        <% }) %>
+                        <div class="flex items-end">
+                          <button class="btn btn-ghost w-full justify-center" type="submit"><i data-lucide="save" class="h-4 w-4"></i><span>Save</span></button>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                <% } %>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

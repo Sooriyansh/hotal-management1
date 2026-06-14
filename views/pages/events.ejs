@@ -1,0 +1,46 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="page-hero" style="background-image: url('<%= events[0]?.image %>')">
+    <div class="page-hero-inner">
+      <p class="eyebrow reveal">Wedding Hall / Corporate Events / Custom Quotes</p>
+      <h1 class="reveal font-display text-5xl md:text-6xl">Event Management</h1>
+      <p class="reveal max-w-2xl text-white/70">Plan prestige weddings, summits, birthdays, and conferences with hall availability and payment tracking.</p>
+    </div>
+  </section>
+
+  <section class="section grid gap-8 lg:grid-cols-[1fr_380px]">
+    <div class="grid gap-5 md:grid-cols-2">
+      <% events.forEach((event) => { %>
+        <article class="feature-card reveal">
+          <img src="<%= event.image %>" alt="<%= event.name %>" loading="lazy">
+          <div class="p-5">
+            <p class="eyebrow">Up to <%= event.capacity %> guests</p>
+            <h2 class="mt-2 font-display text-3xl"><%= event.name %></h2>
+            <p class="mt-3 text-2xl text-luxury-gold">From <%= site.currency %><%= event.price.toLocaleString() %></p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <% event.features.forEach((item) => { %><span class="mini-chip"><%= item %></span><% }) %>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+
+    <form class="glass-panel h-fit p-5" action="/events/book" method="post">
+      <h2 class="font-display text-3xl">Request Quote</h2>
+      <div class="mt-5 grid gap-3">
+        <label class="label">Guest Name<input class="field" name="guestName" value="<%= user?.name || '' %>" required></label>
+        <label class="label">Package<select class="field" name="eventName"><% events.forEach((event) => { %><option><%= event.name %></option><% }) %></select></label>
+        <label class="label">Date<input class="field" type="date" name="eventDate" required></label>
+        <label class="label">Guests<input class="field" type="number" min="10" name="guests" value="80"></label>
+        <label class="label">Notes<textarea class="field min-h-28" name="notes" placeholder="Menu, hall, AV, theme"></textarea></label>
+        <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="file-signature" class="h-4 w-4"></i><span>Create Quote</span></button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

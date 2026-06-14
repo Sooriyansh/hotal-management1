@@ -1,0 +1,41 @@
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1><i class="fas fa-utensils me-2"></i>Menu</h1>
+    <p><%= items.length %> menu item(s)</p>
+  </div>
+  <% if (['superadmin','manager','chef'].includes(currentUser.role)) { %>
+    <a href="/menu/create" class="btn btn-primary"><i class="fas fa-plus me-1"></i>Add Item</a>
+  <% } %>
+</div>
+
+<div class="row g-3">
+  <% items.forEach(function(item) { %>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="card menu-card <%= item.isVeg ? 'veg' : 'non-veg' %>">
+        <div class="menu-card-img">
+          <i class="fas fa-<%= item.isVeg ? 'leaf' : 'drumstick-bite' %>"></i>
+          <% if (!item.isAvailable) { %><span class="badge bg-danger position-absolute top-0 end-0 m-2">Unavailable</span><% } %>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h6 class="mb-1"><%= item.name %></h6>
+            <span class="badge bg-light text-dark"><%= item.category %></span>
+          </div>
+          <p class="text-muted small mb-2"><%= item.description || '' %></p>
+          <div class="d-flex justify-content-between align-items-center">
+            <strong class="text-primary">₹<%= item.price %></strong>
+            <small class="text-muted"><i class="far fa-clock"></i> <%= item.preparationTime %> min</small>
+          </div>
+          <% if (['superadmin','manager','chef'].includes(currentUser.role)) { %>
+            <div class="d-flex gap-2 mt-2">
+              <a href="/menu/<%= item._id %>/edit" class="btn btn-sm btn-outline-primary flex-fill"><i class="fas fa-edit"></i></a>
+              <form action="/menu/<%= item._id %>?_method=DELETE" method="POST" class="flex-fill" onsubmit="return confirm('Delete item?')">
+                <button class="btn btn-sm btn-outline-danger w-100"><i class="fas fa-trash"></i></button>
+              </form>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  <% }); %>
+</div>

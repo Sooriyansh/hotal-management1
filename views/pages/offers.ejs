@@ -1,0 +1,32 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Countdown Timer / Dynamic Discounts / Coupon Codes</p>
+        <h1 class="font-display text-5xl md:text-6xl">Offers System</h1>
+      </div>
+      <a href="/rooms" class="btn btn-gold"><i data-lucide="calendar-check" class="h-4 w-4"></i><span>Book</span></a>
+    </div>
+    <div class="grid gap-5 lg:grid-cols-3">
+      <% offers.forEach((offer) => { %>
+        <article class="offer-tile min-h-[420px] reveal" style="background-image: url('<%= offer.image %>')">
+          <div>
+            <p class="pill w-fit"><%= offer.discount %>% Off</p>
+            <h2 class="mt-4 font-display text-4xl"><%= offer.name %></h2>
+          </div>
+          <div>
+            <div class="mb-3 flex items-center gap-2 text-sm text-white/70"><i data-lucide="clock" class="h-4 w-4 text-luxury-gold"></i><span class="countdown" data-hours="<%= offer.endsInHours %>"><%= offer.endsInHours %>h</span></div>
+            <code class="block border border-luxury-gold/30 bg-black/55 px-4 py-3 text-luxury-gold"><%= offer.code %></code>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

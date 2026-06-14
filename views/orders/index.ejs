@@ -1,0 +1,34 @@
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1><i class="fas fa-receipt me-2"></i>Orders</h1>
+    <p><%= orders.length %> total order(s)</p>
+  </div>
+  <a href="/orders/new" class="btn btn-primary"><i class="fas fa-plus me-1"></i>New Order</a>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr><th>Order ID</th><th>Type</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Payment</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <% if (orders.length === 0) { %>
+          <tr><td colspan="8" class="text-center text-muted py-4">No orders yet</td></tr>
+        <% } %>
+        <% orders.forEach(function(o) { %>
+          <tr>
+            <td><strong><%= o.orderId %></strong></td>
+            <td><span class="badge bg-info"><%= o.orderType %></span></td>
+            <td><%= o.customerName || (o.customer ? o.customer.name : 'Walk-in') %></td>
+            <td><%= o.items.length %> item(s)</td>
+            <td>₹<%= o.total.toFixed(2) %></td>
+            <td><span class="badge badge-<%= o.status %>"><%= o.status %></span></td>
+            <td><span class="badge badge-<%= o.paymentStatus %>"><%= o.paymentStatus %></span></td>
+            <td><a href="/orders/<%= o._id %>" class="btn btn-sm btn-outline-primary">View</a></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>

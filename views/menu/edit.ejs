@@ -1,0 +1,38 @@
+<div class="page-header"><h1><i class="fas fa-edit me-2"></i>Edit Menu Item</h1></div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="/menu/<%= item._id %>?_method=PUT" method="POST">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Name *</label>
+          <input type="text" class="form-control" name="name" value="<%= item.name %>" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Category *</label>
+          <select class="form-select" name="category" required>
+            <% ['starter','main-course','dessert','beverage','snacks','breakfast'].forEach(function(c) { %>
+              <option value="<%= c %>" <%= item.category === c ? 'selected' : '' %>><%= c %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Price (₹)</label>
+          <input type="number" class="form-control" name="price" value="<%= item.price %>" step="0.01">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Prep Time (min)</label>
+          <input type="number" class="form-control" name="preparationTime" value="<%= item.preparationTime %>">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" rows="2"><%= item.description || '' %></textarea>
+        </div>
+      </div>
+      <div class="mt-4">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Update</button>
+        <a href="/menu" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

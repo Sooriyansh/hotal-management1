@@ -1,0 +1,38 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="section min-h-[82svh] grid items-center gap-8 lg:grid-cols-[.9fr_1.1fr]">
+    <div>
+      <p class="eyebrow reveal">AI Butler Assistant</p>
+      <h1 class="reveal font-display text-5xl leading-tight md:text-6xl">Instant Concierge</h1>
+      <p class="reveal mt-5 max-w-xl text-lg leading-8 text-white/68">Room suggestions, restaurant recommendations, tour guide support, booking assistance, FAQ automation, voice-ready prompts, and WhatsApp handoff logic.</p>
+      <div class="reveal mt-7 flex flex-wrap gap-2">
+        <% suggestions.forEach((item) => { %><button class="suggestion-chip" data-message="<%= item %>"><%= item %></button><% }) %>
+      </div>
+    </div>
+
+    <div class="concierge-shell reveal">
+      <div class="concierge-header">
+        <span class="grid h-10 w-10 place-items-center rounded-full bg-luxury-gold text-black"><i data-lucide="sparkles" class="h-5 w-5"></i></span>
+        <div>
+          <h2 class="font-display text-2xl">AI Butler</h2>
+          <p class="text-xs uppercase text-emerald-300">Live</p>
+        </div>
+      </div>
+      <div id="chat-log" class="chat-log">
+        <div class="chat-bubble bot">Good evening. I can plan rooms, dining, spa, tours, events, and VIP benefits.</div>
+      </div>
+      <form id="concierge-form" class="mt-4 flex gap-2">
+        <input id="concierge-input" class="field" name="message" placeholder="Ask for a luxury itinerary..." autocomplete="off">
+        <button class="icon-btn gold-fill" type="submit" aria-label="Send message" title="Send">
+          <i data-lucide="send" class="h-4 w-4"></i>
+        </button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

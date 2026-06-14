@@ -1,0 +1,125 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24" data-customer-dashboard="true">
+  <section class="dashboard-layout">
+    <aside class="dashboard-nav">
+      <p class="eyebrow">Customer Dashboard</p>
+      <h1 class="mt-2 font-display text-3xl"><%= user.name %></h1>
+      <a href="/rooms"><i data-lucide="bed-double" class="h-4 w-4"></i><span>Room Reservations</span></a>
+      <a href="/restaurant"><i data-lucide="utensils" class="h-4 w-4"></i><span>Food Orders</span></a>
+      <a href="/spa"><i data-lucide="sparkles" class="h-4 w-4"></i><span>Spa Bookings</span></a>
+      <a href="/events"><i data-lucide="party-popper" class="h-4 w-4"></i><span>Events</span></a>
+      <a href="/auth/profile"><i data-lucide="user" class="h-4 w-4"></i><span>Profile</span></a>
+    </aside>
+
+    <div class="grid gap-5">
+      <div class="grid gap-4 md:grid-cols-4">
+        <div class="metric reveal"><span>Reward Points</span><strong>18,420</strong></div>
+        <div class="metric reveal"><span>Membership</span><strong>Platinum</strong></div>
+        <div class="metric reveal"><span>Live Records</span><strong><%= Object.values(live).reduce((sum, rows) => sum + rows.length, 0) || dashboard.bookings.length %></strong></div>
+        <div class="metric reveal"><span>Invoices</span><strong><%= (live.payments && live.payments.length) || dashboard.invoices.length %></strong></div>
+      </div>
+
+      <div class="glass-panel p-5">
+        <div class="section-heading mb-4 p-0">
+          <h2 class="font-display text-3xl">My Room Bookings</h2>
+          <a href="/rooms" class="icon-btn" aria-label="New booking" title="New booking"><i data-lucide="plus" class="h-4 w-4"></i></a>
+        </div>
+        <div class="responsive-table">
+          <table>
+            <thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Dates</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <% const roomRows = live['room-bookings'] || []; %>
+              <% if (roomRows.length) { %>
+                <% roomRows.forEach((row) => { %>
+                  <tr>
+                    <td><%= row.raw.bookingNo %></td>
+                    <td><%= row.raw.guestName %></td>
+                    <td><%= row.raw.roomCategory || row.raw.assignedRoom %></td>
+                    <td><%= row.raw.checkIn ? new Date(row.raw.checkIn).toLocaleDateString() : '' %> - <%= row.raw.checkOut ? new Date(row.raw.checkOut).toLocaleDateString() : '' %></td>
+                    <td><span class="status-pill"><%= row.raw.status %></span></td>
+                    <td>
+                      <% if (!['Cancelled', 'Checked Out'].includes(row.raw.status)) { %>
+                        <form action="/dashboard/room-bookings/<%= row.id %>/actions/cancel" method="post">
+                          <button class="icon-btn" type="submit" aria-label="Cancel booking" title="Cancel booking"><i data-lucide="x" class="h-4 w-4"></i></button>
+                        </form>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <% dashboard.bookings.forEach((booking) => { %>
+                  <tr><td><%= booking.id %></td><td><%= user.name %></td><td><%= booking.name %></td><td><%= booking.date %></td><td><span class="status-pill"><%= booking.status %></span></td><td></td></tr>
+                <% }) %>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-2">
+        <div class="glass-panel p-5">
+          <h2 class="font-display text-3xl">Live Orders</h2>
+          <div class="mt-5 grid gap-3">
+            <% const orderRows = live.orders || []; %>
+            <% if (orderRows.length) { %>
+              <% orderRows.forEach((row) => { %>
+                <div class="activity-row">
+                  <span><%= row.raw.orderNo %> / <%= row.raw.orderType %></span>
+                  <strong><%= row.raw.kitchenStatus %></strong>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="activity-row"><span>No live orders yet</span><i data-lucide="chef-hat" class="h-4 w-4 text-luxury-gold"></i></div>
+            <% } %>
+          </div>
+        </div>
+        <div class="glass-panel p-5">
+          <h2 class="font-display text-3xl">Notifications</h2>
+          <div class="mt-5 grid gap-3" data-live-notifications>
+            <% const notes = live.notifications || []; %>
+            <% if (notes.length) { %>
+              <% notes.forEach((note) => { %>
+                <div class="activity-row"><span><%= note.raw.title %></span><strong><%= note.raw.type %></strong></div>
+              <% }) %>
+            <% } else { %>
+              <% dashboard.notifications.forEach((note) => { %>
+                <div class="activity-row"><span><%= note %></span><i data-lucide="bell" class="h-4 w-4 text-luxury-gold"></i></div>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-3">
+        <% [
+          ['table-bookings', 'Table Reservations', 'calendar-days'],
+          ['spa-bookings', 'Spa Bookings', 'sparkles'],
+          ['event-bookings', 'Event Requests', 'party-popper']
+        ].forEach(([moduleSlug, label, icon]) => { %>
+          <div class="glass-panel p-5">
+            <h2 class="font-display text-2xl"><%= label %></h2>
+            <div class="mt-5 grid gap-3">
+              <% const rows = live[moduleSlug] || []; %>
+              <% if (rows.length) { %>
+                <% rows.forEach((row) => { %>
+                  <div class="activity-row">
+                    <span><%= row.label %></span>
+                    <strong><%= row.raw.status %></strong>
+                  </div>
+                <% }) %>
+              <% } else { %>
+                <div class="activity-row"><span>No records yet</span><i data-lucide="<%= icon %>" class="h-4 w-4 text-luxury-gold"></i></div>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

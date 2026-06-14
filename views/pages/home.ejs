@@ -1,0 +1,152 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main>
+  <section class="hero relative flex min-h-[92svh] items-end overflow-hidden">
+    <video class="absolute inset-0 h-full w-full object-cover" autoplay muted loop playsinline poster="<%= images.hero %>">
+      <source src="<%= heroVideo %>" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.86),rgba(10,25,47,.58),rgba(0,0,0,.25))]"></div>
+    <button class="video-toggle icon-btn absolute right-4 top-28 z-10 md:right-8" aria-label="Toggle video audio" title="Toggle audio">
+      <i data-lucide="volume-x" class="h-5 w-5"></i>
+    </button>
+
+    <div class="relative z-10 mx-auto grid w-full max-w-7xl gap-8 px-4 pb-8 pt-28 sm:px-6 lg:grid-cols-[1fr_420px] lg:px-8">
+      <div class="max-w-3xl self-end">
+        <p class="eyebrow reveal">Fifth Avenue hospitality, private dining, and intelligent service</p>
+        <h1 class="reveal mt-5 font-display text-5xl leading-[1.02] text-white sm:text-6xl lg:text-7xl">Grand Luxury Hotel & Restaurant</h1>
+        <p class="reveal mt-5 max-w-2xl text-lg leading-8 text-white/72"><%= site.tagline %> with smart rooms, chef-led dining, wellness rituals, and a concierge that moves at the speed of your plans.</p>
+        <div class="reveal mt-8 flex flex-wrap gap-3">
+          <a href="/rooms" class="btn btn-gold"><i data-lucide="bed-double" class="h-5 w-5"></i><span>Book a Room</span></a>
+          <a href="/restaurant" class="btn btn-ghost"><i data-lucide="utensils" class="h-5 w-5"></i><span>Reserve a Table</span></a>
+          <a href="/concierge" class="btn btn-ghost"><i data-lucide="sparkles" class="h-5 w-5"></i><span>Instant Concierge</span></a>
+        </div>
+      </div>
+
+      <div class="reveal glass-panel p-4 md:p-5">
+        <div class="flex border-b border-white/10">
+          <button class="tab-trigger active" data-tab="room-booking"><i data-lucide="calendar-days" class="h-4 w-4"></i><span>Room</span></button>
+          <button class="tab-trigger" data-tab="table-booking"><i data-lucide="wine" class="h-4 w-4"></i><span>Table</span></button>
+        </div>
+        <form id="room-booking" class="tab-panel grid gap-3 pt-5" action="/rooms/book" method="post">
+          <div class="grid grid-cols-2 gap-3">
+            <label class="label">Check-In<input class="field" type="date" name="checkIn" required></label>
+            <label class="label">Check-Out<input class="field" type="date" name="checkOut" required></label>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="label">Guests<input class="field" type="number" min="1" name="guests" value="2" required></label>
+            <label class="label">Category<select class="field" name="roomCategory"><% rooms.forEach((room) => { %><option><%= room.name %></option><% }) %></select></label>
+          </div>
+          <input type="hidden" name="price" value="<%= rooms[0]?.price || 390 %>">
+          <input type="hidden" name="nights" value="1">
+          <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="badge-check" class="h-4 w-4"></i><span>Check Availability</span></button>
+        </form>
+        <form id="table-booking" class="tab-panel hidden grid gap-3 pt-5" action="/restaurant/reserve" method="post">
+          <div class="grid grid-cols-2 gap-3">
+            <label class="label">Date<input class="field" type="date" name="reservationDate" required></label>
+            <label class="label">Time<input class="field" type="time" name="reservationTime" required></label>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="label">Guests<input class="field" type="number" min="1" name="guests" value="2" required></label>
+            <label class="label">Meal<select class="field" name="mealType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Chef Table</option></select></label>
+          </div>
+          <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="concierge-bell" class="h-4 w-4"></i><span>Reserve Table</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-white/10 bg-[#07111f]">
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 py-8 sm:px-6 md:grid-cols-4 lg:px-8">
+      <% stats.forEach((stat) => { %>
+        <div class="stat-tile reveal">
+          <div class="font-display text-4xl text-luxury-gold"><span class="counter" data-target="<%= stat.value %>">0</span><%= stat.suffix %></div>
+          <div class="mt-2 text-sm uppercase text-white/55"><%= stat.label %></div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">Rooms</p>
+      <h2>Signature Stays</h2>
+      <a href="/rooms" class="icon-btn" aria-label="View all rooms" title="View rooms"><i data-lucide="arrow-right" class="h-5 w-5"></i></a>
+    </div>
+    <div class="grid gap-5 lg:grid-cols-3">
+      <% rooms.forEach((room) => { %>
+        <article class="feature-card reveal">
+          <img src="<%= room.image %>" alt="<%= room.name %>" loading="lazy">
+          <div class="p-5">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="font-display text-2xl"><%= room.name %></h3>
+              <span class="pill"><%= site.currency %><%= room.price %></span>
+            </div>
+            <p class="mt-3 text-sm leading-6 text-white/65"><%= room.description %></p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <% room.amenities.slice(0,3).forEach((item) => { %><span class="mini-chip"><%= item %></span><% }) %>
+            </div>
+          </div>
+          <a class="card-action" href="/rooms/<%= room.slug %>"><i data-lucide="calendar-plus" class="h-4 w-4"></i><span>Book Suite</span></a>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="media-band" style="background-image: url('<%= images.restaurant %>')">
+    <div class="mx-auto grid max-w-7xl gap-8 px-4 py-24 sm:px-6 lg:grid-cols-[.8fr_1fr] lg:px-8">
+      <div>
+        <p class="eyebrow reveal">Restaurant</p>
+        <h2 class="reveal font-display text-4xl md:text-5xl">Chef-led dining with live kitchen status.</h2>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <% foodItems.forEach((item) => { %>
+          <div class="menu-mini reveal">
+            <span class="text-xs uppercase text-luxury-gold"><%= item.category %></span>
+            <h3 class="mt-2 font-display text-xl"><%= item.name %></h3>
+            <p class="mt-3 text-sm text-white/60"><%= item.chefNote %></p>
+            <div class="mt-4 flex items-center justify-between text-sm"><span><%= item.calories %> cal</span><strong><%= site.currency %><%= item.price %></strong></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">Offers</p>
+      <h2>Limited Prestige</h2>
+      <a href="/offers" class="icon-btn" aria-label="View offers" title="View offers"><i data-lucide="ticket-percent" class="h-5 w-5"></i></a>
+    </div>
+    <div class="grid gap-5 lg:grid-cols-3">
+      <% offers.forEach((offer) => { %>
+        <article class="offer-tile reveal" style="background-image: url('<%= offer.image %>')">
+          <div>
+            <p class="pill w-fit"><%= offer.discount %>% Off</p>
+            <h3 class="mt-4 font-display text-3xl"><%= offer.name %></h3>
+          </div>
+          <div class="flex items-center justify-between">
+            <code><%= offer.code %></code>
+            <span class="countdown" data-hours="<%= offer.endsInHours %>"><%= offer.endsInHours %>h</span>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="grid gap-5 lg:grid-cols-3">
+      <% testimonials.forEach((item) => { %>
+        <blockquote class="quote-card reveal">
+          <div class="flex text-luxury-gold"><% for (let i = 0; i < item.rating; i++) { %><i data-lucide="star" class="h-4 w-4 fill-current"></i><% } %></div>
+          <p class="mt-5 text-lg leading-8 text-white/78">"<%= item.quote %>"</p>
+          <footer class="mt-6 text-sm text-white/55"><strong class="text-white"><%= item.name %></strong> / <%= item.role %></footer>
+        </blockquote>
+      <% }) %>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

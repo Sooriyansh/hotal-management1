@@ -1,0 +1,69 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="dashboard-layout">
+    <aside class="dashboard-nav">
+      <p class="eyebrow">Admin Control</p>
+      <h1 class="mt-2 font-display text-3xl">Luxury Analytics</h1>
+      <% modules.forEach((module) => { %>
+        <a href="/admin/<%= module.slug %>"><i data-lucide="<%= module.icon || 'panel-right' %>" class="h-4 w-4"></i><span><%= module.label %></span></a>
+      <% }) %>
+    </aside>
+
+    <div class="grid gap-5">
+      <div class="grid gap-4 md:grid-cols-4">
+        <div class="metric reveal" data-live-metric="revenue"><span>Paid Revenue</span><strong><%= site.currency %><%= metrics.revenue.toLocaleString() %></strong></div>
+        <div class="metric reveal" data-live-metric="rooms"><span>Rooms</span><strong><%= metrics.rooms.toLocaleString() %></strong></div>
+        <div class="metric reveal" data-live-metric="bookings"><span>Bookings</span><strong><%= metrics.bookings.toLocaleString() %></strong></div>
+        <div class="metric reveal" data-live-metric="orders"><span>Orders</span><strong><%= metrics.orders.toLocaleString() %></strong></div>
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-[1.2fr_.8fr]">
+        <div class="glass-panel p-5">
+          <div class="flex items-center justify-between">
+            <h2 class="font-display text-3xl">Booking Trends</h2>
+            <span class="pill">+<%= analytics.customerGrowth %>% growth</span>
+          </div>
+          <div class="chart-bars mt-8">
+            <% analytics.bookingTrends.forEach((value) => { %>
+              <span style="height:<%= value %>%"><small><%= value %></small></span>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5">
+          <h2 class="font-display text-3xl">Memberships</h2>
+          <div class="mt-5 grid gap-3">
+            <% Object.entries(analytics.membershipStatistics).forEach(([tier, value]) => { %>
+              <div class="activity-row"><span><%= tier %></span><strong><%= value %></strong></div>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-2">
+        <div class="glass-panel p-5">
+          <h2 class="font-display text-3xl">Live Workload</h2>
+          <div class="mt-5 grid gap-3">
+            <div class="activity-row"><span>Unread notifications</span><strong><%= metrics.notifications %></strong></div>
+            <div class="activity-row"><span>Audit log entries</span><strong><%= metrics.activities %></strong></div>
+            <div class="activity-row"><span>Visible modules</span><strong><%= modules.length %></strong></div>
+          </div>
+        </div>
+        <div class="glass-panel p-5">
+          <h2 class="font-display text-3xl">Order Statistics</h2>
+          <div class="mt-5 grid gap-3">
+            <% Object.entries(analytics.orderStatistics).forEach(([status, value]) => { %>
+              <div class="activity-row"><span><%= status %></span><strong><%= value %></strong></div>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

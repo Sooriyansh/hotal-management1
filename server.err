@@ -1,0 +1,15 @@
+Change stream disabled for table-bookings: The $changeStream stage is only supported on replica sets
+Change stream disabled for rooms: The $changeStream stage is only supported on replica sets
+Change stream disabled for tables: The $changeStream stage is only supported on replica sets
+Change stream disabled for menu-items: The $changeStream stage is only supported on replica sets
+Change stream disabled for users: The $changeStream stage is only supported on replica sets
+Change stream disabled for room-bookings: The $changeStream stage is only supported on replica sets
+Change stream disabled for orders: The $changeStream stage is only supported on replica sets
+Change stream disabled for spa-bookings: The $changeStream stage is only supported on replica sets
+Change stream disabled for events: The $changeStream stage is only supported on replica sets
+Change stream disabled for event-bookings: The $changeStream stage is only supported on replica sets
+Change stream disabled for payments: The $changeStream stage is only supported on replica sets
+Change stream disabled for reviews: The $changeStream stage is only supported on replica sets
+Change stream disabled for notifications: The $changeStream stage is only supported on replica sets
+Change stream disabled for spa-services: The $changeStream stage is only supported on replica sets
+Change stream disabled for activity-logs: The $changeStream stage is only supported on replica sets

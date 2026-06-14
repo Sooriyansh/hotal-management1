@@ -1,0 +1,16 @@
+<% if (success || error) { %>
+  <div class="fixed right-4 top-24 z-50 w-[min(92vw,380px)]">
+    <% if (success) { %>
+      <div class="toast border-emerald-400/40 bg-emerald-500/15 text-emerald-100">
+        <i data-lucide="check-circle-2" class="h-5 w-5"></i>
+        <span><%= success %></span>
+      </div>
+    <% } %>
+    <% if (error) { %>
+      <div class="toast border-rose-400/40 bg-rose-500/15 text-rose-100">
+        <i data-lucide="circle-alert" class="h-5 w-5"></i>
+        <span><%= error %></span>
+      </div>
+    <% } %>
+  </div>
+<% } %>

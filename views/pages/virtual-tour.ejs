@@ -1,0 +1,46 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="page-hero" style="background-image: url('<%= tourStops[0].image %>')">
+    <div class="page-hero-inner">
+      <p class="eyebrow reveal">360 Viewer / Fullscreen / Interactive Hotspots / VR Ready</p>
+      <h1 class="reveal font-display text-5xl md:text-6xl">Virtual Tour System</h1>
+      <p class="reveal max-w-2xl text-white/70">Preview every signature space before booking: reception, rooms, suites, restaurant, spa, and pool.</p>
+    </div>
+  </section>
+
+  <section class="section grid gap-6 lg:grid-cols-[1fr_360px]">
+    <div class="tour-viewer reveal">
+      <img id="tour-image" src="<%= tourStops[0].image %>" alt="<%= tourStops[0].name %>">
+      <div class="hotspot hotspot-a" title="Interactive hotspot"></div>
+      <div class="hotspot hotspot-b" title="Interactive hotspot"></div>
+      <div class="hotspot hotspot-c" title="Interactive hotspot"></div>
+      <div class="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/85 to-transparent p-5">
+        <div>
+          <p class="eyebrow">Now Viewing</p>
+          <h2 id="tour-title" class="font-display text-3xl"><%= tourStops[0].name %></h2>
+        </div>
+        <button class="icon-btn gold-fill" id="fullscreen-tour" aria-label="Fullscreen tour" title="Fullscreen">
+          <i data-lucide="maximize" class="h-5 w-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <aside class="glass-panel h-fit p-4">
+      <div class="grid gap-3">
+        <% tourStops.forEach((stop, index) => { %>
+          <button class="tour-stop <%= index === 0 ? 'active' : '' %>" data-image="<%= stop.image %>" data-name="<%= stop.name %>">
+            <img src="<%= stop.image %>" alt="<%= stop.name %>" loading="lazy">
+            <span><%= stop.name %></span>
+            <small><%= stop.hotspots %> hotspots</small>
+          </button>
+        <% }) %>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

@@ -1,0 +1,33 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="pt-24">
+  <section class="section grid min-h-[80svh] items-center gap-8 lg:grid-cols-[.9fr_1.1fr]">
+    <div>
+      <p class="eyebrow reveal">Reservations / Events / Dining / Concierge</p>
+      <h1 class="reveal font-display text-5xl md:text-6xl">Contact Concierge</h1>
+      <p class="reveal mt-5 max-w-xl text-lg leading-8 text-white/68">Send your request to the right desk and keep the conversation ready for CRM, newsletters, and private guest care.</p>
+      <div class="reveal mt-8 grid gap-4 text-white/70">
+        <p><i data-lucide="phone" class="inline h-5 w-5 text-luxury-gold"></i> <%= site.phone %></p>
+        <p><i data-lucide="mail" class="inline h-5 w-5 text-luxury-gold"></i> <%= site.email %></p>
+        <p><i data-lucide="map-pin" class="inline h-5 w-5 text-luxury-gold"></i> <%= site.address %></p>
+      </div>
+    </div>
+
+    <form class="glass-panel reveal p-5 md:p-7" action="/contact" method="post">
+      <div class="grid gap-3 md:grid-cols-2">
+        <label class="label">Name<input class="field" name="name" required></label>
+        <label class="label">Email<input class="field" type="email" name="email" required></label>
+        <label class="label">Phone<input class="field" name="phone"></label>
+        <label class="label">Desk<select class="field" name="source"><option>Contact</option><option>Concierge</option><option>Event Quote</option><option>Newsletter</option></select></label>
+      </div>
+      <label class="label mt-3">Subject<input class="field" name="subject" required></label>
+      <label class="label mt-3">Message<textarea class="field min-h-40" name="message" required></textarea></label>
+      <button class="btn btn-gold mt-5 w-full justify-center" type="submit"><i data-lucide="send" class="h-4 w-4"></i><span>Send Request</span></button>
+    </form>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>

@@ -1,0 +1,61 @@
+<header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
+  <nav class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a href="/" class="flex items-center gap-3" aria-label="<%= site.name %> home">
+      <span class="grid h-11 w-11 place-items-center border border-luxury-gold/60 bg-luxury-gold/10 text-luxury-gold">
+        <i data-lucide="gem" class="h-5 w-5"></i>
+      </span>
+      <span class="leading-tight">
+        <span class="block font-display text-lg text-white">Grand Luxury</span>
+        <span class="block text-xs uppercase text-luxury-gold">Hotel & Restaurant</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle grid h-11 w-11 place-items-center border border-white/15 md:hidden" aria-label="Open menu">
+      <i data-lucide="menu" class="h-5 w-5"></i>
+    </button>
+
+    <div class="nav-menu hidden items-center gap-1 md:flex">
+      <% const navItems = [
+        ["/rooms", "Rooms"],
+        ["/restaurant", "Restaurant"],
+        ["/virtual-tour", "Tours"],
+        ["/concierge", "Concierge"],
+        ["/memberships", "VIP"],
+        ["/spa", "Spa"],
+        ["/events", "Events"],
+        ["/offers", "Offers"]
+      ]; %>
+      <% navItems.forEach(([href, label]) => { %>
+        <a href="<%= href %>" class="nav-link <%= currentPath.startsWith(href) ? 'text-luxury-gold' : 'text-white/75' %>"><%= label %></a>
+      <% }) %>
+    </div>
+
+    <div class="hidden items-center gap-2 md:flex">
+      <% if (user) { %>
+        <a href="/dashboard" class="icon-btn" aria-label="Dashboard" title="Dashboard">
+          <i data-lucide="layout-dashboard" class="h-4 w-4"></i>
+        </a>
+        <form action="/auth/logout" method="post">
+          <button class="icon-btn" type="submit" aria-label="Logout" title="Logout">
+            <i data-lucide="log-out" class="h-4 w-4"></i>
+          </button>
+        </form>
+      <% } else { %>
+        <a href="/auth/login" class="btn btn-ghost"><i data-lucide="log-in" class="h-4 w-4"></i><span>Login</span></a>
+      <% } %>
+      <a href="/rooms" class="btn btn-gold"><i data-lucide="calendar-check" class="h-4 w-4"></i><span>Book</span></a>
+    </div>
+  </nav>
+
+  <div class="mobile-panel hidden border-t border-white/10 bg-black/95 px-4 py-4 md:hidden">
+    <div class="grid gap-2">
+      <% navItems.forEach(([href, label]) => { %>
+        <a href="<%= href %>" class="rounded border border-white/10 px-4 py-3 text-white/80"><%= label %></a>
+      <% }) %>
+      <a href="<%= user ? '/dashboard' : '/auth/login' %>" class="btn btn-gold justify-center">
+        <i data-lucide="<%= user ? 'layout-dashboard' : 'log-in' %>" class="h-4 w-4"></i>
+        <span><%= user ? 'Dashboard' : 'Login' %></span>
+      </a>
+    </div>
+  </div>
+</header>
