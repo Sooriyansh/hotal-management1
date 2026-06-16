@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const { getConciergeReply } = require("./services/geminiService");
 const path = require("path");
 const http = require("http");
 const express = require("express");
@@ -120,6 +120,28 @@ io.use((socket, next) => {
   next();
 });
 
+// io.on("connection", (socket) => {
+//   if (socket.user?.id) socket.join(`user:${socket.user.id}`);
+//   if (socket.user?.role) socket.join(`role:${socket.user.role}`);
+
+//   socket.emit("notification", {
+//     title: "Concierge connected",
+//     message: "Live availability, table status, and order tracking are online."
+//   });
+
+//   socket.on("joinBooking", (bookingId) => {
+//     socket.join(`booking:${bookingId}`);
+//   });
+
+//   socket.on("conciergeMessage", (payload) => {
+//     socket.emit("conciergeReply", {
+//       text: `I found a ${payload.intent || "luxury"} option for you. Shall I prepare a reservation summary?`,
+//       at: new Date().toISOString()
+//     });
+//   });
+// });
+
+
 io.on("connection", (socket) => {
   if (socket.user?.id) socket.join(`user:${socket.user.id}`);
   if (socket.user?.role) socket.join(`role:${socket.user.role}`);
@@ -133,14 +155,25 @@ io.on("connection", (socket) => {
     socket.join(`booking:${bookingId}`);
   });
 
-  socket.on("conciergeMessage", (payload) => {
-    socket.emit("conciergeReply", {
-      text: `I found a ${payload.intent || "luxury"} option for you. Shall I prepare a reservation summary?`,
-      at: new Date().toISOString()
-    });
+  socket.on("conciergeMessage", async (payload) => {
+    try {
+      const reply = await getConciergeReply(payload.message);
+
+      socket.emit("conciergeReply", {
+        text: reply,
+        at: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error(error);
+
+      socket.emit("conciergeReply", {
+        text: "Unable to process your request.",
+        at: new Date().toISOString()
+      });
+    }
   });
 });
-
 const start = async () => {
   app.locals.dbReady = await connectDB();
   app.locals.changeStreams = app.locals.dbReady ? setupChangeStreams(io) : [];
