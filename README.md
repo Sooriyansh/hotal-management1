@@ -2,15 +2,49 @@
 
 A cinematic Node.js, Express.js, EJS, MongoDB, Mongoose, Tailwind CSS, GSAP, JWT, and Socket.io hospitality management platform.
 
+## Key Features
+
+### 🏨 Hotel & Room Management
+- **Room Catalog:** Browse luxury rooms with detailed views.
+- **Booking System:** Real-time room availability and booking management.
+- **Virtual Tour:** Immersive virtual tour of the property.
+- **Concierge Service:** AI-powered butler UI for guest assistance.
+
+### 🍽️ Restaurant & Dining
+- **Digital Menu:** Interactive food and beverage catalog.
+- **Table Reservations:** Real-time table availability and booking.
+- **Food Ordering:** Integrated food cart and ordering system.
+- **Kitchen Tracking:** Live order tracking via Socket.io.
+
+### 💆 Spa & Wellness
+- **Spa Services:** Catalog of wellness and spa treatments.
+- **Booking System:** Scheduling and management of spa appointments.
+
+### 📅 Events & Offers
+- **Event Management:** Quote requests and booking for special events.
+- **Promotions:** Coupon system with countdown timers and special offers.
+
+### 👥 User & Membership
+- **Role-Based Access:** Separate experiences for Admin and Customers.
+- **VIP Memberships:** Tiered membership levels with reward points.
+- **Authentication:** Secure JWT-based login, registration, and profile management.
+- **Customer Dashboard:** Manage bookings, orders, invoices, and wishlists.
+
+### 🛠️ Administration & Operations
+- **Admin Dashboard:** Comprehensive analytics for revenue, occupancy, and growth.
+- **Management Modules:** Centralized control for rooms, menu, tables, and users.
+- **Activity Logging:** Tracking system activities for security and auditing.
+- **Notification System:** Real-time alerts via Socket.io.
+
+### 🌐 General Features
+- **Blog & News:** Content management for hotel updates and blogs.
+- **Gallery & Testimonials:** Showcase of property images and guest reviews.
+- **Newsletter:** Subscription system for marketing updates.
+- **Contact System:** Integrated contact forms and inquiry management.
+- **Demo Mode:** Fallback to demo data when MongoDB is disconnected.
+
 ## What Is Included
 
-- Luxury public website with video hero, room booking, restaurant reservations, food cart, virtual tours, concierge chat, memberships, spa, events, offers, contact, and newsletter.
-- JWT cookie authentication with login, register, forgot password token preparation, profile management, avatar URL support, and role based access control.
-- Admin dashboard for revenue, hotel revenue, restaurant revenue, occupancy, booking trends, customer growth, memberships, order statistics, and management modules.
-- Customer dashboard for bookings, restaurant reservations, food orders, membership, reward points, invoices, wishlist, notifications, and profile links.
-- Mongoose schemas for all requested collections: users, rooms, roomBookings, restaurants, tables, tableBookings, foodItems, foodOrders, memberships, membershipTransactions, spaServices, spaBookings, events, eventBookings, payments, coupons, reviews, galleries, testimonials, notifications, blogs, contacts, newsletters, and settings.
-- Socket.io hooks for live notifications, room/table availability, kitchen order tracking, and concierge events.
-- Demo data fallback when MongoDB is not connected, so the UI remains usable immediately.
 
 ## Quick Start
 

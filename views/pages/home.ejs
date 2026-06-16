@@ -2,32 +2,106 @@
 <%- include('../partials/nav') %>
 <%- include('../partials/flash') %>
 
-<main>
-  <section class="hero relative flex min-h-[92svh] items-end overflow-hidden">
-    <video class="absolute inset-0 h-full w-full object-cover" autoplay muted loop playsinline poster="<%= images.hero %>">
+<%
+  const homeStats = [
+    ...stats,
+    { value: 1000, suffix: "+", label: "Events" },
+    { value: 10000, suffix: "+", label: "Orders Served" },
+    { value: 500, suffix: "+", label: "VIP Members" }
+  ];
+  const discoveryFeatures = [
+    ["bed-double", "Luxury Room Booking", "Compare suites, availability, pricing, amenities, and book securely."],
+    ["calendar-heart", "Restaurant Reservation", "Reserve tables for breakfast, dinner, chef table, and private dining."],
+    ["shopping-bag", "Food Ordering", "Order room service and restaurant items through a fast digital flow."],
+    ["radar", "Real-Time Order Tracking", "Guests and teams follow every order from kitchen to delivery."],
+    ["sparkles", "AI Concierge", "Instant support for bookings, plans, FAQs, and premium guest requests."],
+    ["gem", "VIP Membership", "Silver to Diamond programs with points, rewards, and exclusive benefits."],
+    ["flower-2", "Spa Booking", "Book wellness rituals, couple suites, recovery therapy, and spa credits."],
+    ["party-popper", "Event Booking", "Plan birthdays, private salons, ceremonies, and custom hospitality events."],
+    ["heart-handshake", "Wedding Management", "Manage wedding halls, menus, guests, quotes, and planning workflows."],
+    ["presentation", "Conference Hall Booking", "Support corporate summits with AV, halls, dining, and approvals."],
+    ["orbit", "Virtual Tours", "Explore rooms, reception, restaurant, spa, pool, and event spaces visually."],
+    ["badge-dollar-sign", "Reward Points", "Track points, membership value, and repeat-guest benefits."],
+    ["smartphone", "Mobile Friendly Experience", "Every booking and dashboard flow works cleanly on mobile."],
+    ["shield-check", "Secure Authentication", "Protected login, role access, dashboards, and customer accounts."],
+    ["bell-ring", "Live Notifications", "Real-time updates keep customers, staff, and managers aligned."]
+  ];
+  const platformModules = [
+    ["building-2", "Hotel Management"],
+    ["utensils", "Restaurant Management"],
+    ["chef-hat", "Kitchen Management"],
+    ["wine", "Table Reservation"],
+    ["calendar-check", "Room Booking"],
+    ["flower-2", "Spa Management"],
+    ["party-popper", "Event Management"],
+    ["gem", "Membership Management"],
+    ["user-round", "Customer Dashboard"],
+    ["layout-dashboard", "Admin Dashboard"],
+    ["bar-chart-3", "Analytics"],
+    ["radio", "Real-Time Notifications"]
+  ];
+  const workflows = [
+    ["Hotel", ["Customer Books Room", "Hotel Manager Receives Update", "Receptionist Assigns Room", "Customer Gets Notification"]],
+    ["Restaurant", ["Guest Reserves Table", "Restaurant Manager Confirms Slot", "Waiter Prepares Table", "Guest Gets Status Update"]],
+    ["Spa", ["Guest Books Therapy", "Spa Manager Receives Request", "Suite Is Assigned", "Guest Gets Reminder"]],
+    ["Events", ["Client Requests Event", "Event Manager Builds Quote", "Admin Reviews Revenue", "Client Gets Live Update"]]
+  ];
+  const roles = [
+    ["user-round", "Customer", "Book rooms, reserve tables, order food, view invoices, join memberships."],
+    ["building-2", "Hotel Manager", "Monitor room bookings, occupancy, arrivals, and guest workflows."],
+    ["utensils", "Restaurant Manager", "Manage menu, reservations, tables, dining requests, and service status."],
+    ["chef-hat", "Chef", "Receive live orders, update preparation status, and coordinate kitchen flow."],
+    ["hand-platter", "Waiter", "Track assigned tables, service updates, and guest requests."],
+    ["concierge-bell", "Receptionist", "Assign rooms, manage check-ins, and handle guest notifications."],
+    ["flower-2", "Spa Manager", "Schedule therapies, manage suites, and update wellness bookings."],
+    ["party-popper", "Event Manager", "Manage weddings, conferences, custom quotes, and planning status."],
+    ["shield-check", "Super Admin", "Control modules, roles, analytics, workflows, and platform records."]
+  ];
+  const journey = ["Visit Website", "Book Room", "Reserve Table", "Order Food", "Book Spa", "Join Membership", "Attend Event", "Earn Rewards"];
+%>
+
+<main class="home-experience" data-home-experience data-scroll-container>
+  <section class="hero cinematic-hero relative flex min-h-[94svh] items-end overflow-hidden" data-scroll-section>
+    <video class="hero-video absolute inset-0 h-full w-full object-cover" autoplay muted loop playsinline preload="metadata" poster="<%= images.hero %>" data-parallax data-speed="-0.06">
       <source src="<%= heroVideo %>" type="video/mp4">
     </video>
-    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.86),rgba(10,25,47,.58),rgba(0,0,0,.25))]"></div>
-    <button class="video-toggle icon-btn absolute right-4 top-28 z-10 md:right-8" aria-label="Toggle video audio" title="Toggle audio">
+    <div id="home-particles" class="particle-stage" aria-hidden="true"></div>
+    <canvas id="hero-webgl" class="hero-webgl" aria-hidden="true"></canvas>
+    <div id="vanta-fog" class="vanta-fog" aria-hidden="true"></div>
+    <div class="hero-aurora" aria-hidden="true"></div>
+    <div class="hero-noise" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.9),rgba(10,25,47,.54),rgba(0,0,0,.2))]"></div>
+
+    <button class="video-toggle icon-btn magnetic absolute right-4 top-28 z-20 md:right-8" aria-label="Toggle video audio" title="Toggle audio">
       <i data-lucide="volume-x" class="h-5 w-5"></i>
     </button>
 
-    <div class="relative z-10 mx-auto grid w-full max-w-7xl gap-8 px-4 pb-8 pt-28 sm:px-6 lg:grid-cols-[1fr_420px] lg:px-8">
+    <div class="hero-orbit hero-orbit-a" data-float-layer data-speed="0.22"></div>
+    <div class="hero-orbit hero-orbit-b" data-float-layer data-speed="-0.18"></div>
+
+    <div class="relative z-10 mx-auto grid w-full max-w-7xl gap-8 px-4 pb-8 pt-28 sm:px-6 lg:grid-cols-[1fr_450px] lg:px-8">
       <div class="max-w-3xl self-end">
-        <p class="eyebrow reveal">Fifth Avenue hospitality, private dining, and intelligent service</p>
-        <h1 class="reveal mt-5 font-display text-5xl leading-[1.02] text-white sm:text-6xl lg:text-7xl">Grand Luxury Hotel & Restaurant</h1>
-        <p class="reveal mt-5 max-w-2xl text-lg leading-8 text-white/72"><%= site.tagline %> with smart rooms, chef-led dining, wellness rituals, and a concierge that moves at the speed of your plans.</p>
+        <p class="eyebrow reveal split-text" data-scramble>Fifth Avenue hospitality, private dining, and intelligent service</p>
+        <h1 class="reveal split-text mt-5 font-display text-5xl leading-[1.02] text-white sm:text-6xl lg:text-7xl" data-hero-title>Grand Luxury Hotel & Restaurant</h1>
+        <p class="reveal mt-5 max-w-2xl text-lg leading-8 text-white/72" data-parallax data-speed="0.08"><%= site.tagline %> with smart rooms, chef-led dining, wellness rituals, and a concierge that moves at the speed of your plans.</p>
         <div class="reveal mt-8 flex flex-wrap gap-3">
-          <a href="/rooms" class="btn btn-gold"><i data-lucide="bed-double" class="h-5 w-5"></i><span>Book a Room</span></a>
-          <a href="/restaurant" class="btn btn-ghost"><i data-lucide="utensils" class="h-5 w-5"></i><span>Reserve a Table</span></a>
-          <a href="/concierge" class="btn btn-ghost"><i data-lucide="sparkles" class="h-5 w-5"></i><span>Instant Concierge</span></a>
+          <a href="/rooms" class="btn btn-gold magnetic ripple-btn"><i data-lucide="bed-double" class="h-5 w-5"></i><span>Book a Room</span></a>
+          <a href="/restaurant" class="btn btn-ghost magnetic ripple-btn"><i data-lucide="utensils" class="h-5 w-5"></i><span>Reserve a Table</span></a>
+          <a href="/concierge" class="btn btn-ghost magnetic ripple-btn"><i data-lucide="sparkles" class="h-5 w-5"></i><span>Instant Concierge</span></a>
         </div>
       </div>
 
-      <div class="reveal glass-panel p-4 md:p-5">
-        <div class="flex border-b border-white/10">
-          <button class="tab-trigger active" data-tab="room-booking"><i data-lucide="calendar-days" class="h-4 w-4"></i><span>Room</span></button>
-          <button class="tab-trigger" data-tab="table-booking"><i data-lucide="wine" class="h-4 w-4"></i><span>Table</span></button>
+      <div class="reveal hero-3d-panel glass-panel p-4 md:p-5" data-tilt-card>
+        <div class="hero-spline-shell">
+          <spline-viewer loading-anim-type="spinner-small-dark" data-spline-url="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode"></spline-viewer>
+          <div class="spline-fallback">
+            <span>Interactive Arrival Model</span>
+            <strong>Golden Atrium</strong>
+          </div>
+        </div>
+        <div class="mt-4 flex border-b border-white/10">
+          <button class="tab-trigger active magnetic" data-tab="room-booking"><i data-lucide="calendar-days" class="h-4 w-4"></i><span>Room</span></button>
+          <button class="tab-trigger magnetic" data-tab="table-booking"><i data-lucide="wine" class="h-4 w-4"></i><span>Table</span></button>
         </div>
         <form id="room-booking" class="tab-panel grid gap-3 pt-5" action="/rooms/book" method="post">
           <div class="grid grid-cols-2 gap-3">
@@ -40,7 +114,7 @@
           </div>
           <input type="hidden" name="price" value="<%= rooms[0]?.price || 390 %>">
           <input type="hidden" name="nights" value="1">
-          <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="badge-check" class="h-4 w-4"></i><span>Check Availability</span></button>
+          <button class="btn btn-gold magnetic ripple-btn w-full justify-center" type="submit"><i data-lucide="badge-check" class="h-4 w-4"></i><span>Check Availability</span></button>
         </form>
         <form id="table-booking" class="tab-panel hidden grid gap-3 pt-5" action="/restaurant/reserve" method="post">
           <div class="grid grid-cols-2 gap-3">
@@ -51,16 +125,16 @@
             <label class="label">Guests<input class="field" type="number" min="1" name="guests" value="2" required></label>
             <label class="label">Meal<select class="field" name="mealType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Chef Table</option></select></label>
           </div>
-          <button class="btn btn-gold w-full justify-center" type="submit"><i data-lucide="concierge-bell" class="h-4 w-4"></i><span>Reserve Table</span></button>
+          <button class="btn btn-gold magnetic ripple-btn w-full justify-center" type="submit"><i data-lucide="concierge-bell" class="h-4 w-4"></i><span>Reserve Table</span></button>
         </form>
       </div>
     </div>
   </section>
 
-  <section class="border-y border-white/10 bg-[#07111f]">
-    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 py-8 sm:px-6 md:grid-cols-4 lg:px-8">
-      <% stats.forEach((stat) => { %>
-        <div class="stat-tile reveal">
+  <section class="stats-band border-y border-white/10 bg-[#07111f]" data-scroll-section>
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 py-8 sm:px-6 md:grid-cols-4 lg:grid-cols-7 lg:px-8">
+      <% homeStats.forEach((stat) => { %>
+        <div class="stat-tile reveal" data-tilt-card>
           <div class="font-display text-4xl text-luxury-gold"><span class="counter" data-target="<%= stat.value %>">0</span><%= stat.suffix %></div>
           <div class="mt-2 text-sm uppercase text-white/55"><%= stat.label %></div>
         </div>
@@ -68,44 +142,180 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section discovery-section" data-scroll-section>
     <div class="section-heading">
-      <p class="eyebrow">Rooms</p>
-      <h2>Signature Stays</h2>
-      <a href="/rooms" class="icon-btn" aria-label="View all rooms" title="View rooms"><i data-lucide="arrow-right" class="h-5 w-5"></i></a>
+      <div>
+        <p class="eyebrow reveal">Why Choose Grand Luxury</p>
+        <h2 class="reveal">Everything Guests And Teams Need</h2>
+      </div>
     </div>
-    <div class="grid gap-5 lg:grid-cols-3">
-      <% rooms.forEach((room) => { %>
-        <article class="feature-card reveal">
-          <img src="<%= room.image %>" alt="<%= room.name %>" loading="lazy">
-          <div class="p-5">
-            <div class="flex items-center justify-between gap-3">
-              <h3 class="font-display text-2xl"><%= room.name %></h3>
-              <span class="pill"><%= site.currency %><%= room.price %></span>
-            </div>
-            <p class="mt-3 text-sm leading-6 text-white/65"><%= room.description %></p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <% room.amenities.slice(0,3).forEach((item) => { %><span class="mini-chip"><%= item %></span><% }) %>
-            </div>
-          </div>
-          <a class="card-action" href="/rooms/<%= room.slug %>"><i data-lucide="calendar-plus" class="h-4 w-4"></i><span>Book Suite</span></a>
+    <div class="feature-discovery-grid">
+      <% discoveryFeatures.forEach(([icon, title, text]) => { %>
+        <article class="platform-feature-card reveal" data-tilt-card>
+          <span class="feature-icon"><i data-lucide="<%= icon %>" class="h-5 w-5"></i></span>
+          <h3><%= title %></h3>
+          <p><%= text %></p>
         </article>
       <% }) %>
     </div>
   </section>
 
-  <section class="media-band" style="background-image: url('<%= images.restaurant %>')">
+  <section class="section platform-showcase" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal">Platform Features Showcase</p>
+        <h2 class="reveal">Everything In One Luxury Platform</h2>
+      </div>
+    </div>
+    <div class="module-grid">
+      <% platformModules.forEach(([icon, title]) => { %>
+        <article class="module-card reveal">
+          <i data-lucide="<%= icon %>" class="h-5 w-5"></i>
+          <span><%= title %></span>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section realtime-section" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal">Real-Time Features</p>
+        <h2 class="reveal">Live Workflows From Guest To Staff</h2>
+      </div>
+    </div>
+    <div class="workflow-grid">
+      <% workflows.forEach(([name, steps]) => { %>
+        <article class="workflow-card reveal">
+          <div class="workflow-title"><span><%= name %></span><i data-lucide="radio" class="h-4 w-4"></i></div>
+          <div class="workflow-steps">
+            <% steps.forEach((step, index) => { %>
+              <div class="workflow-step">
+                <span><%= index + 1 %></span>
+                <p><%= step %></p>
+              </div>
+            <% }) %>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section roles-section" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal">Role Based System</p>
+        <h2 class="reveal">Dashboards For Every Hospitality Team</h2>
+      </div>
+    </div>
+    <div class="role-grid">
+      <% roles.forEach(([icon, title, text]) => { %>
+        <article class="role-card reveal">
+          <i data-lucide="<%= icon %>" class="h-5 w-5"></i>
+          <div>
+            <h3><%= title %></h3>
+            <p><%= text %></p>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section live-demo-section" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal">Live System Demonstration</p>
+        <h2 class="reveal">A Real-Time Hospitality Command Center</h2>
+      </div>
+    </div>
+    <div class="live-demo-shell reveal">
+      <div class="live-demo-main">
+        <div class="live-demo-topbar">
+          <span>Live Operations</span>
+          <strong>Today</strong>
+        </div>
+        <div class="live-metrics">
+          <div><span>Live Orders</span><strong>38</strong></div>
+          <div><span>Reservations</span><strong>64</strong></div>
+          <div><span>Bookings</span><strong>21</strong></div>
+          <div><span>Revenue</span><strong>$128K</strong></div>
+        </div>
+        <div class="live-bars" aria-hidden="true">
+          <span style="height: 42%"></span><span style="height: 58%"></span><span style="height: 72%"></span><span style="height: 66%"></span><span style="height: 88%"></span><span style="height: 76%"></span>
+        </div>
+      </div>
+      <aside class="live-notification-panel">
+        <div><i data-lucide="bell-ring" class="h-4 w-4"></i><span>Room booking confirmed</span></div>
+        <div><i data-lucide="chef-hat" class="h-4 w-4"></i><span>Kitchen order preparing</span></div>
+        <div><i data-lucide="wine" class="h-4 w-4"></i><span>Table assigned to waiter</span></div>
+        <div><i data-lucide="badge-dollar-sign" class="h-4 w-4"></i><span>VIP reward points updated</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section journey-section" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal">Interactive Platform Overview</p>
+        <h2 class="reveal">Guest Journey Across The Ecosystem</h2>
+      </div>
+    </div>
+    <div class="journey-roadmap reveal">
+      <% journey.forEach((step, index) => { %>
+        <div class="journey-node">
+          <span><%= index + 1 %></span>
+          <strong><%= step %></strong>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="horizontal-showcase section" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal split-text">Room Showcase</p>
+        <h2 class="reveal split-text">Signature Stays In Motion</h2>
+      </div>
+      <a href="/rooms" class="icon-btn magnetic" aria-label="View all rooms" title="View rooms"><i data-lucide="arrow-right" class="h-5 w-5"></i></a>
+    </div>
+    <div class="room-track-wrap">
+      <div class="room-track">
+        <% rooms.forEach((room) => { %>
+          <article class="feature-card room-cinema-card reveal" data-tilt-card>
+            <div class="image-reveal">
+              <img src="<%= room.image %>" alt="<%= room.name %>" loading="lazy" decoding="async" data-parallax data-speed="-0.035">
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h3 class="font-display text-2xl"><%= room.name %></h3>
+                <span class="pill"><%= site.currency %><%= room.price %></span>
+              </div>
+              <p class="mt-3 text-sm leading-6 text-white/65"><%= room.description %></p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <% room.amenities.slice(0,3).forEach((item) => { %><span class="mini-chip"><%= item %></span><% }) %>
+              </div>
+            </div>
+            <a class="card-action magnetic ripple-btn" href="/rooms/<%= room.slug %>"><i data-lucide="calendar-plus" class="h-4 w-4"></i><span>Book Suite</span></a>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section class="media-band restaurant-cinema" style="background-image: url('<%= images.restaurant %>')" data-scroll-section>
+    <canvas id="steam-canvas" class="steam-canvas" aria-hidden="true"></canvas>
     <div class="mx-auto grid max-w-7xl gap-8 px-4 py-24 sm:px-6 lg:grid-cols-[.8fr_1fr] lg:px-8">
       <div>
-        <p class="eyebrow reveal">Restaurant</p>
-        <h2 class="reveal font-display text-4xl md:text-5xl">Chef-led dining with live kitchen status.</h2>
+        <p class="eyebrow reveal split-text">Restaurant</p>
+        <h2 class="reveal split-text font-display text-4xl md:text-5xl">Chef-led dining with live kitchen status.</h2>
       </div>
       <div class="grid gap-4 md:grid-cols-3">
         <% foodItems.forEach((item) => { %>
-          <div class="menu-mini reveal">
+          <div class="menu-mini reveal food-hover-card" data-tilt-card>
             <span class="text-xs uppercase text-luxury-gold"><%= item.category %></span>
             <h3 class="mt-2 font-display text-xl"><%= item.name %></h3>
             <p class="mt-3 text-sm text-white/60"><%= item.chefNote %></p>
+            <div class="ingredient-line mt-4"><% item.ingredients.slice(0, 3).forEach((ingredient) => { %><span><%= ingredient %></span><% }) %></div>
             <div class="mt-4 flex items-center justify-between text-sm"><span><%= item.calories %> cal</span><strong><%= site.currency %><%= item.price %></strong></div>
           </div>
         <% }) %>
@@ -113,15 +323,32 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="event-story section" data-scroll-section>
     <div class="section-heading">
-      <p class="eyebrow">Offers</p>
-      <h2>Limited Prestige</h2>
-      <a href="/offers" class="icon-btn" aria-label="View offers" title="View offers"><i data-lucide="ticket-percent" class="h-5 w-5"></i></a>
+      <div>
+        <p class="eyebrow reveal split-text">Events</p>
+        <h2 class="reveal split-text">Ceremony, Summit, Salon</h2>
+      </div>
+      <a href="/events" class="icon-btn magnetic" aria-label="View events" title="View events"><i data-lucide="party-popper" class="h-5 w-5"></i></a>
+    </div>
+    <div class="event-stack">
+      <figure class="event-frame reveal" data-tilt-card><img src="<%= images.event %>" alt="Luxury wedding showcase" loading="lazy" decoding="async"><figcaption>Wedding Showcase</figcaption></figure>
+      <figure class="event-frame reveal" data-tilt-card><img src="<%= images.lobby %>" alt="Conference showcase" loading="lazy" decoding="async"><figcaption>Conference Showcase</figcaption></figure>
+      <figure class="event-frame reveal" data-tilt-card><img src="<%= images.restaurant %>" alt="Private dining event" loading="lazy" decoding="async"><figcaption>Private Events</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section" data-scroll-section>
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow reveal split-text">Offers</p>
+        <h2 class="reveal split-text">Limited Prestige</h2>
+      </div>
+      <a href="/offers" class="icon-btn magnetic" aria-label="View offers" title="View offers"><i data-lucide="ticket-percent" class="h-5 w-5"></i></a>
     </div>
     <div class="grid gap-5 lg:grid-cols-3">
       <% offers.forEach((offer) => { %>
-        <article class="offer-tile reveal" style="background-image: url('<%= offer.image %>')">
+        <article class="offer-tile reveal" style="background-image: url('<%= offer.image %>')" data-tilt-card>
           <div>
             <p class="pill w-fit"><%= offer.discount %>% Off</p>
             <h3 class="mt-4 font-display text-3xl"><%= offer.name %></h3>
@@ -135,15 +362,33 @@
     </div>
   </section>
 
-  <section class="section pt-0">
+  <section class="section pt-0" data-scroll-section>
     <div class="grid gap-5 lg:grid-cols-3">
       <% testimonials.forEach((item) => { %>
-        <blockquote class="quote-card reveal">
+        <blockquote class="quote-card reveal" data-tilt-card>
           <div class="flex text-luxury-gold"><% for (let i = 0; i < item.rating; i++) { %><i data-lucide="star" class="h-4 w-4 fill-current"></i><% } %></div>
           <p class="mt-5 text-lg leading-8 text-white/78">"<%= item.quote %>"</p>
           <footer class="mt-6 text-sm text-white/55"><strong class="text-white"><%= item.name %></strong> / <%= item.role %></footer>
         </blockquote>
       <% }) %>
+    </div>
+  </section>
+
+  <section class="final-platform-cta" data-scroll-section>
+    <div class="final-platform-inner reveal">
+      <p class="eyebrow">Complete Hospitality Management</p>
+      <h2>One Platform. Complete Hospitality Management.</h2>
+      <div class="final-icon-row" aria-hidden="true">
+        <% ["bed-double", "utensils", "chef-hat", "flower-2", "gem", "party-popper", "layout-dashboard"].forEach((icon) => { %>
+          <span><i data-lucide="<%= icon %>" class="h-7 w-7"></i></span>
+        <% }) %>
+      </div>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/rooms" class="btn btn-gold magnetic ripple-btn"><i data-lucide="bed-double" class="h-5 w-5"></i><span>Book a Room</span></a>
+        <a href="/restaurant" class="btn btn-ghost magnetic ripple-btn"><i data-lucide="wine" class="h-5 w-5"></i><span>Reserve a Table</span></a>
+        <a href="/memberships" class="btn btn-ghost magnetic ripple-btn"><i data-lucide="gem" class="h-5 w-5"></i><span>Explore Membership</span></a>
+        <a href="/concierge" class="btn btn-ghost magnetic ripple-btn"><i data-lucide="sparkles" class="h-5 w-5"></i><span>Talk To Concierge</span></a>
+      </div>
     </div>
   </section>
 </main>
