@@ -39,6 +39,53 @@
       </div>
     </div>
 
+
+<!-- QR Menu Card -->
+ <aside class="grid h-fit gap-5">
+<div
+  class="glass-panel overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 text-center backdrop-blur-xl transition-all duration-300 hover:border-yellow-500/40 hover:shadow-2xl"
+>
+  <div
+    class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 to-amber-300 text-black"
+  >
+    <i data-lucide="qr-code" class="h-7 w-7"></i>
+  </div>
+
+  <h2 class="font-display text-2xl md:text-3xl">
+    Scan Menu QR
+  </h2>
+
+  <p class="mt-2 text-sm leading-relaxed text-white/70">
+    Scan this QR code to instantly access our digital menu,
+    place orders, and enjoy contactless dining.
+  </p>
+
+  <div class="mt-5 flex justify-center">
+    <img
+      src="/uploads/QR.jpeg"
+      alt="Restaurant Menu QR Code"
+      class="h-48 w-48 rounded-2xl bg-white p-2 shadow-xl md:h-56 md:w-56"
+    >
+  </div>
+
+  <div
+    class="mt-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-xs text-yellow-400"
+  >
+    📱 Scan & Order • Live Kitchen Tracking • Table Service
+  </div>
+
+  <a
+    href="/restaurant"
+    class="btn btn-gold mt-5 flex w-full justify-center"
+  >
+    <i data-lucide="utensils" class="h-4 w-4"></i>
+    <span>Open Digital Menu</span>
+  </a>
+</div>
+</aside>
+
+
+
     <aside class="grid h-fit gap-5">
       <form class="glass-panel p-5" action="/restaurant/reserve" method="post">
         <h2 class="font-display text-3xl">Reserve Table</h2>
@@ -68,6 +115,10 @@
           <% }) %>
         </div>
       </div>
+  
+
+
+
 
       <div class="glass-panel p-5">
         <h2 class="font-display text-3xl">Cart</h2>
